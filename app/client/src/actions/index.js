@@ -1,6 +1,7 @@
 import unsplash from '../components/images/Unsplash'
 
 export const addDiy = (diy) => ({ type: "ADDED_DIY", payload: diy });
+export const removeDiy = (diys) => ({ type: "REMOVE_DIY", payload: diys });
 export const editDiy = (diy) => ({ type: "EDIT_DIY", payload: diy });
 export const retreiveDiys = (diys) => ({ type: "GOT_DIYS", payload: diys })
 export const addTool = (tool) => ({ type: "ADDED_TOOL", payload: tool });
@@ -61,7 +62,7 @@ export const getDiy = (id) => {
       })
   }
 }
-export const patchDiy = (id, diy) => {
+export const patchDiy = (diy,id) => {
   return (dispatch) => {
     dispatch({ type: "LOADING", payload: true })
     const configObj = {
@@ -72,7 +73,7 @@ export const patchDiy = (id, diy) => {
       },
       body: JSON.stringify({ diy })
     }
-    fetch(`/diy/${id}`, configObj)
+    fetch(`/diys/${id}`, configObj)
       .then(res => {
         if (!res.ok) {
           throw dispatch({ type: "ERROR", payload: 'could not fetch the data for that resource' })
@@ -91,11 +92,11 @@ export const patchDiy = (id, diy) => {
       })
   }
 }
-export const deleteDiy = (id) => {
+export const deleteDiy = (id,diys) => {
   return (dispatch) => {
     dispatch({ type: "LOADING", payload: true })
     const configObj = {
-      method: 'DELETE',
+      method: 'DELETE'
     }
     fetch(`/diys/${id}`, configObj)
       .then(res => {
@@ -105,8 +106,10 @@ export const deleteDiy = (id) => {
         return res.json();
       })
       .then(data => {
-        console.log(data)
-        dispatch(deleteDiy(data))
+        
+        // let removedDiyArray =diys.filter(d=>d.id!==id)
+        // console.log(removedDiyArray)
+        // dispatch(removeDiy(removedDiyArray))
         dispatch({ type: "LOADING", payload: false })
         dispatch({ type: "ERROR", payload: null })
       })
@@ -118,9 +121,29 @@ export const deleteDiy = (id) => {
   }
 }
 
+export const searchImage = async (term) => {
+  const response = await unsplash.get('/search/photos', {
+    params: { query: term },
+  })
+  return response.data.results[0].urls.regular
+}
+
+export const ImageArray = (diys) => {
+  return diys.map(d => searchImage(d.title))
+}
+
+export const promiseAllImages = (diys) => {
+  return (dispatch) => {
+    Promise.all(ImageArray(diys)).then(results => {
+      dispatch(diyImages(results))
+    })
+  }
+}
 //make diy
-export const createDiy = (diy) => {
+export const createDiy = (diy,diys) => {
+  console.log('createDiy',diy)
   // send a fetch request 
+  console.log('fetch diy:',diy)
   return (dispatch) => {
     dispatch({ type: "LOADING", payload: true })
     const configObj = {
@@ -140,9 +163,10 @@ export const createDiy = (diy) => {
         return res.json()
       })
       .then(data => {
-        dispatch({ type: "LOADING", payload: false })
-
         dispatch(addDiy(data))
+        dispatch(promiseAllImages(diys))
+
+        dispatch({ type: "LOADING", payload: false })
         dispatch({ type: "ERROR", payload: null })
 
       }).catch(err => {
@@ -177,14 +201,9 @@ export const createUser = (user) => {
         return res.json()
       })
       .then(data => {
-        if (data.logged_in) {
-          dispatch(addUser(data))
-          dispatch({ type: "LOADING", payload: false })
-          dispatch({ type: "ERROR", payload: null })
-        } else {
-          this.handleLogout()
-        }
-        // dispatch(addUser(data))
+        dispatch(addUser(data))
+        dispatch({ type: "LOADING", payload: false })
+        dispatch({ type: "ERROR", payload: null })
       }).catch(err => {
         dispatch({ type: "LOADING", payload: false })
         dispatch({ type: "ERROR", payload: err.message })
@@ -251,21 +270,3 @@ export const getTools = () => {
   }
 }
 
-export const searchImage = async (term) => {
-  const response = await unsplash.get('/search/photos', {
-    params: { query: term },
-  })
-  return response.data.results[0].urls.regular
-}
-
-export const ImageArray = (diys) => {
-  return diys.map(d => searchImage(d.title))
-}
-
-export const promiseAllImages = (diys) => {
-  return (dispatch) => {
-    Promise.all(ImageArray(diys)).then(results => {
-      dispatch(diyImages(results))
-    })
-  }
-}
