@@ -10,20 +10,28 @@ import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 import { useEffect } from "react";
 import { useDispatch } from 'react-redux'
-import {deleteDiy} from '../actions'
+import {deleteDiy, getDiys} from '../actions'
+import history from '../history'
+
 export function DiyList(props) {
   const classes = useStyles();
 const dispatch=useDispatch()
   const editButton = (diy) => {
-
+    
+    const removedDiy =(diy)=>{
+      let removedDiyArray =props.diys.filter(d=>d.id!==diy.id)
+            dispatch(props.removeDiy(removedDiyArray))
+    }
     if (props.currentUser !== undefined) {
       if (props.currentUser.id === diy.user_id) {
         return (
           <>
-            <Button href={`/edit/${diy.id}`} size="small" color="primary">
+            <Button onClick={()=>history.push(`/edit/${diy.id}`)} size="small" color="primary">
               Edit
             </Button>
-            <Button onClick={()=>dispatch(deleteDiy(diy.id))} size="small" color="primary">
+            <Button onClick={()=>{
+              dispatch(deleteDiy(diy.id,props.diys))
+              dispatch(getDiys())}} size="small" color="primary">
               Delete
             </Button>
           </>
@@ -31,7 +39,7 @@ const dispatch=useDispatch()
       }
     }
   };
-
+  
   // useEffect(()=>editButton(),[props.currentUser])
   if (props.loading) {
     return <div>...Loading</div>;
@@ -60,7 +68,7 @@ const dispatch=useDispatch()
                   </Typography>
                 </CardContent>
                 <CardActions>
-                  <Button href={`/show/${diy.id}`} size="small" color="primary">
+                  <Button onClick={()=>history.push(`/show/${diy.id}`)} size="small" color="primary">
                     View
                   </Button>
                   {editButton(diy)}
@@ -83,4 +91,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps,{deleteDiy})(DiyList);
+export default connect(mapStateToProps,{deleteDiy,getDiys})(DiyList);
