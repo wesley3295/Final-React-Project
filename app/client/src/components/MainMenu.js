@@ -10,7 +10,6 @@ function MainMenu({ currentUser,loading }) {
   const classes = useStyles()
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [open, setOpen] = React.useState(false);
-  console.log('current user:', currentUser)
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);

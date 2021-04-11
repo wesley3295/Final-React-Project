@@ -8,7 +8,7 @@ import DiyForm from './DiyForm.js'
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles';
-
+import history from '../history'
 const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
     },
     title: {
       flexGrow: 1,
+      
     },
   }));
 const NavBar = ({ currentUser }) => {
@@ -33,11 +34,11 @@ const NavBar = ({ currentUser }) => {
       <AppBar position="static">
         <Toolbar>
         <MainMenu edge="start" className={classes.menuButton}/>
-                   <Link color="inherit" href="/" className={classes.title}>
-          <Typography variant="h6" color="inherit" className={classes.title}>
+                   {/* <Link color="inherit" href="/" className={classes.title}> */}
+          <Typography onClick={()=>history.push('/')} variant="h6" color="inherit" className={classes.title}>
                             Do It!
           </Typography>
-                   </Link>
+                   {/* </Link> */}
           {/* {diyForm ? <Button color='inherit' onClick={handleDiyForm}>Create DIY</Button> : <DiyForm setDiyForm={setDiyForm} />} */}
             <DiyForm/>
         </Toolbar>

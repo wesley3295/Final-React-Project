@@ -1,7 +1,6 @@
 // import DiyList from "./DiyList";
 
 // const Home = () => {
-//   console.log(diys)
 //   return (
 //     <div className="home">
 //       { error && <div>{ error }</div> }
