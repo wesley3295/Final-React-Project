@@ -53,6 +53,7 @@ function Diy(props) {
   const [activeStep, setActiveStep] = React.useState(0);
   const [completed, setCompleted] = React.useState({});
   const dispatch = useDispatch()
+  useEffect(()=>console.log('instructions',props.diy))
   useEffect(() => dispatch(getDiy(parseInt(props.match.params.id))), [])
   if (props.loading) {
     return (
@@ -64,7 +65,7 @@ function Diy(props) {
 
 
 function getSteps() {
-  return props.diy.instructions.map(s=>"")
+  return props.diy.instructions&&props.diy.instructions.map(s=>"")
   // return ['', '', '','', '', ''];
 }
 const steps = getSteps();
@@ -104,7 +105,6 @@ const totalSteps = () => {
     let d = new Date(props.diy.created_at)
     return (d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear())
   }
-
 
   return (
     <Container maxWidth="lg">
