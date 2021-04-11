@@ -14,7 +14,8 @@ class DiysController < ApplicationController
   end
 
   # POST /diys
-  def create    
+  def create   
+    #  byebug
     @diy = Diy.new(diy_params)
     if @diy.save
       render json: @diy, status: :created, location: @diy
@@ -34,6 +35,7 @@ class DiysController < ApplicationController
 
   # DELETE /diys/1
   def destroy
+    @diy.kill_relationships
     @diy.destroy
   end
 
@@ -45,6 +47,6 @@ class DiysController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def diy_params
-      params.require(:diy).permit(:title, :supplies, :instructions, :user_id, :category_id,tools_attributes:[])
+      params.require(:diy).permit(:title, :supplies, {instructions:[]}, :user_id, :category_id,tools_attributes:[])
     end
 end

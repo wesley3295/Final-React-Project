@@ -3,8 +3,17 @@ class Diy < ApplicationRecord
   belongs_to :category
   has_many :diy_tools
   has_many :tools,through: :diy_tools
-  
-  @diy.tools.delete(@tool)
+
+
+
+def kill_relationships
+  self.tools.delete_all
+end
+
+
+
+
+
   def tools_attributes=(tools)
     tools.each do |t|
       self.tools << Tool.find_or_create_by(name: t)
