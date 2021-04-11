@@ -60,8 +60,8 @@ function EditDiyForm(props) {
         if (!diy) {
             alert('Please Complete The Form')
         }
-        props.patchDiy(diy)
-        props.setDiyForm(true)
+        props.patchDiy(diy,props.diy.id)
+        // props.setDiyForm(true)
         resetInputs()
     }
     
@@ -103,7 +103,7 @@ function EditDiyForm(props) {
             title: "",
             tools_attributes: props.diy.tools&&props.diy.tools.map(t=>t.name),
             supplies: "",
-            instructions: "",
+            instructions: [],
             user_id: undefined,
             category_id: undefined
         })},[props.diy.tools])
@@ -116,8 +116,7 @@ function EditDiyForm(props) {
           )
         }
 
-       console.log('props diy tools:',props.diy.tools)
-       console.log('diy tools:',diy.tools_attributes)
+      
     return (
 <Container maxWidth="sm">
         
