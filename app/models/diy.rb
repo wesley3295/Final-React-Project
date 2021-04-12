@@ -15,6 +15,7 @@ end
 
 
   def tools_attributes=(tools)
+    self.tools.delete_all
     tools.each do |t|
       self.tools << Tool.find_or_create_by(name: t)
     end
