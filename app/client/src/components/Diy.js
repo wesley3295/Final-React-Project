@@ -44,6 +44,7 @@ const useStyles = makeStyles((theme) =>
   },
 }),
 );
+////////////////////////////////////////////////////////
 
 function Diy(props) {
   const classes = useStyles();
@@ -52,10 +53,10 @@ function Diy(props) {
   const [completed, setCompleted] = React.useState({});
   const dispatch = useDispatch()
   
+////////////////////////////////////////////////////////
   
   function getSteps() {
     return props.diy.instructions&&props.diy.instructions.map(s=>"")
-    // return ['', '', '','', '', ''];
   }
   const steps = getSteps();
   
@@ -96,7 +97,7 @@ function Diy(props) {
   }
   
   
-  useEffect(() => dispatch(getDiy(parseInt(props.match.params.id))), [])
+  useEffect(() => dispatch(getDiy(parseInt(props.match.params.id))), [props.match.params.id,dispatch])
   if (props.loading) {
     return (
       <div>

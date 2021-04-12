@@ -32,7 +32,6 @@ const tutorialSteps = [
     },
 ];
 
-//activeStep,handleNext,handleBack
 const Carousel = ({diy,activeStep}) => {
 
     return (

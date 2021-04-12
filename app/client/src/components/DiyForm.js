@@ -103,11 +103,8 @@ function DiyForm(props) {
     if (!diy) {
       alert("Please Complete The Form");
     }
-    console.log("a",diy)
     props.createDiy(diy, props.diys);
-    console.log("b",diy)
     resetInputs();
-    console.log("c",diy)
   };
 
   const createOptions = () => {
@@ -148,8 +145,7 @@ function DiyForm(props) {
   useEffect(() => getCategories(), []);
   // eslint-disable-next-line
   useEffect(() =>handleAddInput(), []);
-  useEffect(() =>console.log('use effect diy:',diy)
-  , [diy]);
+  
   
   return (
     <div>

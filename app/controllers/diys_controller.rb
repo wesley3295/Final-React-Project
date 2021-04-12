@@ -26,6 +26,7 @@ class DiysController < ApplicationController
 
   # PATCH/PUT /diys/1
   def update
+    
     if @diy.update(diy_params)
       render json: @diy
     else
