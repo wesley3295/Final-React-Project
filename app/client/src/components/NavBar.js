@@ -2,10 +2,8 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import MainMenu from './MainMenu'
 import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link';
-import React, { useState } from 'react'
+import React from 'react'
 import DiyForm from './DiyForm.js'
-import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles';
 import history from '../history'
@@ -23,12 +21,12 @@ const useStyles = makeStyles((theme) => ({
   }));
 const NavBar = ({ currentUser }) => {
     const classes = useStyles();
-    const [diyForm, setDiyForm] = useState(true)
+    // const [diyForm, setDiyForm] = useState(true)
   
 
-    const handleDiyForm = () => {
-        currentUser&&currentUser.id ? setDiyForm(false) : alert('Please Login To Make A DIY')
-    }
+    // const handleDiyForm = () => {
+    //     currentUser&&currentUser.id ? setDiyForm(false) : alert('Please Login To Make A DIY')
+    // }
     return (
         <div className={classes.root}>
       <AppBar position="static">

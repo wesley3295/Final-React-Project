@@ -11,7 +11,7 @@ export const addUser = (user) => ({ type: "ADDED_USER", payload: user });
 export const currentUser = (user) => ({ type: "CURRENT_USER", payload: user })
 export const obtainDiy = (diy) => ({ type: "SHOW_DIY", payload: diy })
 export const diyImages = (images) => ({ type: 'DIY_IMAGES', payload: images })
-
+export const load= (boolean)=> ({ type: "LOADING", payload: false })
 //all diys
 export const getDiys = () => {
   return (dispatch) => {
@@ -235,8 +235,8 @@ export const fetchUser = (user) => {
         return res.json()
       })
       .then(data => {
-        dispatch({ type: "LOADING", payload: false })
         dispatch(currentUser({ user: data }))
+        dispatch({ type: "LOADING", payload: false })
         dispatch({ type: "ERROR", payload: null })
 
       }).catch(err => {

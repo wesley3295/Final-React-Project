@@ -1,4 +1,4 @@
-import React from "react";
+import React,{ useEffect, useState } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
@@ -8,7 +8,6 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Chip from "@material-ui/core/Chip";
 import { Autocomplete } from "@material-ui/lab";
-import { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect, useDispatch } from "react-redux";
 import { createDiy, getTools } from "../actions";
@@ -147,6 +146,7 @@ function DiyForm(props) {
   // eslint-disable-next-line
   useEffect(() => dispatch(() => props.getTools()), [dispatch]);
   useEffect(() => getCategories(), []);
+  // eslint-disable-next-line
   useEffect(() =>handleAddInput(), []);
   useEffect(() =>console.log('use effect diy:',diy)
   , [diy]);

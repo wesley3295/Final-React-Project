@@ -3,11 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Collapse from '@material-ui/core/Collapse';
-import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
@@ -53,25 +51,16 @@ function Diy(props) {
   const [activeStep, setActiveStep] = React.useState(0);
   const [completed, setCompleted] = React.useState({});
   const dispatch = useDispatch()
-  useEffect(()=>console.log('instructions',props.diy))
-  useEffect(() => dispatch(getDiy(parseInt(props.match.params.id))), [])
-  if (props.loading) {
-    return (
-      <div>
-      ...Loading
-    </div>
-  )
-}
-
-
-function getSteps() {
-  return props.diy.instructions&&props.diy.instructions.map(s=>"")
-  // return ['', '', '','', '', ''];
-}
-const steps = getSteps();
-
-const totalSteps = () => {
-  return steps.length;
+  
+  
+  function getSteps() {
+    return props.diy.instructions&&props.diy.instructions.map(s=>"")
+    // return ['', '', '','', '', ''];
+  }
+  const steps = getSteps();
+  
+  const totalSteps = () => {
+    return steps.length;
   };
   const isLastStep = () => {
     return activeStep === totalSteps() - 1;
@@ -86,11 +75,11 @@ const totalSteps = () => {
   
   const handleNext = () => {
     const newActiveStep =
-      isLastStep() && !allStepsCompleted()
-        ? // It's the last step, but not all steps have been completed,
-        // find the first step that has been completed
-        steps.findIndex((step, i) => !(i in completed))
-        : activeStep + 1;
+    isLastStep() && !allStepsCompleted()
+    ? // It's the last step, but not all steps have been completed,
+    // find the first step that has been completed
+    steps.findIndex((step, i) => !(i in completed))
+    : activeStep + 1;
     setActiveStep(newActiveStep);
   };
   
@@ -100,12 +89,21 @@ const totalSteps = () => {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-
+  
   const createdAt = () => {
     let d = new Date(props.diy.created_at)
     return (d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear())
   }
-
+  
+  
+  useEffect(() => dispatch(getDiy(parseInt(props.match.params.id))), [])
+  if (props.loading) {
+    return (
+      <div>
+      ...Loading
+    </div>
+  )
+}
   return (
     <Container maxWidth="lg">
       <Card className={classes.root}>
@@ -116,7 +114,7 @@ const totalSteps = () => {
             </IconButton>
           }
           title={createdAt()}
-          subheader= {`by:${props.diy.user.username}`}
+          subheader= {props.diy.user&&`by:${props.diy.user.username}`}
           
         />
         <Carousel diy={props.diy} activeStep={activeStep} setActiveStep={setActiveStep} handleBack={handleBack} handleNext={handleNext} />
