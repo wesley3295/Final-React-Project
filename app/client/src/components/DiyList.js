@@ -8,36 +8,12 @@ import Typography from "@material-ui/core/Typography";
 import { useStyles } from "./HomeCss";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
-import {deleteDiy, getDiys} from '../actions'
-import history from '../history'
-import EditDiyForm from './EditDiyForm'
+import history from "../history";
+import EditDiyForm from "./EditDiyForm";
+
 export function DiyList(props) {
   const classes = useStyles();
-  // const editButton = (diy) => {
-    
-  //   // const removedDiy =(diy)=>{
-  //   //   let removedDiyArray =props.diys.filter(d=>d.id!==diy.id)
-  //   //         dispatch(props.removeDiy(removedDiyArray))
-  //   // }
-  //   if (props.currentUser !== undefined) {
-  //     if (props.currentUser.id === diy.user_id) {
-  //       return (
-  //         <>
-  //           <Button onClick={()=>history.push(`/edit/${diy.id}`)} size="small" color="primary">
-  //             Edit
-  //           </Button>
-  //           <Button onClick={()=>{
-  //             dispatch(deleteDiy(diy.id,props.diys))
-  //             dispatch(getDiys())}} size="small" color="primary">
-  //             Delete
-  //           </Button>
-  //         </>
-  //       );
-  //     }
-  //   }
-  // };
-  
-  // useEffect(()=>editButton(),[props.currentUser])
+
   if (props.loading) {
     return <div>...Loading</div>;
   }
@@ -65,11 +41,14 @@ export function DiyList(props) {
                   </Typography>
                 </CardContent>
                 <CardActions>
-                  <Button onClick={()=>history.push(`/show/${diy.id}`)} size="small" color="primary">
+                  <Button
+                    onClick={() => history.push(`/show/${diy.id}`)}
+                    size="small"
+                    color="primary"
+                  >
                     View
                   </Button>
-                  <EditDiyForm diy={diy}/>
-                  {/* {editButton(diy)} */}
+                  <EditDiyForm diy={diy} />
                 </CardActions>
               </Card>
             </Grid>
@@ -89,4 +68,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps,{deleteDiy,getDiys})(DiyList);
+export default connect(mapStateToProps)(DiyList);

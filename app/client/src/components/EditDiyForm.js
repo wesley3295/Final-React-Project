@@ -11,7 +11,7 @@ import { Autocomplete } from "@material-ui/lab";
 import { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect, useDispatch } from "react-redux";
-import { getTools, patchDiy, load } from "../actions";
+import { getTools, patchDiy, load, deleteDiy, getDiys } from "../actions";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
@@ -43,35 +43,36 @@ function EditDiyForm(props) {
   const [open, setOpen] = React.useState(false);
   const dispatch = useDispatch();
   const [categories, setCategories] = useState([]);
-  // const  [steps, setSteps] = useState([]);
   const [diy, setDiy] = useState({
     title: props.diy.title,
-    tools_attributes:  props.diy.tools.map(t=>t.name),
+    tools_attributes: props.diy.tools.map((t) => t.name),
     supplies: props.diy.supplies,
     instructions: [],
     user_id: props.diy.user_id,
     category_id: props.diy.category_id,
   });
-  
+
+
+////////////////////////////////////////////////////////
   const handleChangeInput = (i, event) => {
     const values = [...diy.instructions];
     const { name, value } = event.target;
-    values[i] = value;
-    setDiy({...diy,instructions:[values]});
-    // const diyInstructions = steps.map((s) =>  s);
-    // setDiy({ ...diy, instructions: diyInstructions });
+    values[i][name] = value;
+    setDiy({ ...diy, instructions: values });
   };
+
   const handleAddInput = () => {
     const values = [...diy.instructions];
     values.push({
       instructions: "",
     });
-    setDiy({...diy,instructions:[values]});
+    setDiy({ ...diy, instructions: values });
   };
+
   const handleRemoveInput = (i) => {
     const values = [...diy.instructions];
     values.splice(i, 1);
-    setDiy({...diy,instructions:[values]});
+    setDiy({ ...diy, instructions: values });
   };
 
   const handleChange = (e) => {
@@ -81,7 +82,7 @@ function EditDiyForm(props) {
       user_id: props.currentUser.id,
     });
   };
-
+////////////////////////////////////////////////////////
   const onSubmit = (e) => {
     e.preventDefault();
     if (!diy) {
@@ -89,7 +90,7 @@ function EditDiyForm(props) {
     }
     props.patchDiy(diy, props.diy.id);
   };
-
+////////////////////////////////////////////////////////
   const createOptions = () => {
     return categories.map((c, i) => (
       <option key={i} value={c.id}>
@@ -110,7 +111,7 @@ function EditDiyForm(props) {
         console.log(err);
       });
   };
-
+////////////////////////////////////////////////////////
   const handleClickOpen = () => {
     if (props.currentUser === undefined) {
       alert("Please Login To Make A DIY");
@@ -122,50 +123,52 @@ function EditDiyForm(props) {
   const handleClose = () => {
     setOpen(false);
   };
+////////////////////////////////////////////////////////
 
-  // eslint-disable-next-line
-
-  //could throw an error
-  // useEffect(() => {
-  //   setDiy({
-  //     title: props.diy.title,
-  //     tools_attributes: props.diy.tools && props.diy.tools.map((t) => t.name),
-  //     supplies: props.diy.supplies,
-  //     instructions: [...props.diy.instructions],
-  //     // props.diy.instructions && props.diy.instructions.map((s) => s),
-  //     user_id: undefined,
-  //     category_id: undefined,
-  //   });
-  // }, [props.diy]);
-
-  // useEffect(() => {
-  //   setDiy({...diy,instructions:[...diy.instructions,...props.diy.instructions]})
-  //   // eslint-disable-next-line
-  // }, []);
-
-  useEffect(() => dispatch(() => props.getTools()), [dispatch]);
-  useEffect(() => getCategories(), []);
-  useEffect(() => props.load(false), [props.tools]);
   useEffect(() => {
-    console.log("steps", diy.instructions)
-    console.log("diy", diy)
-  }, [diy.instructions,diy]);
-  // useEffect(() => , [diy]);
+    const values = props.diy.instructions.map((s) => ({ instructions: s }));
+    setDiy({ ...diy, instructions: [...values] });
+    // eslint-disable-next-line
+  }, []);
 
   useEffect(
-    () => console.log("props.diy.instructions", props.diy.instructions),
-    [props.diy.instructions]
+    () => dispatch(() => props.getTools()), // eslint-disable-next-line
+    [dispatch]
   );
+
+  useEffect(
+    () => props.load(false), // eslint-disable-next-line
+    [props.tools]
+  );
+
+  useEffect(() => getCategories(), []);
+  
+////////////////////////////////////////////////////////
+
   if (props.loading) {
     return <div>...Loading</div>;
   }
+  
+////////////////////////////////////////////////////////
 
   return (
     <div>
-      {props.currentUser && props.currentUser.id === props.diy.id && (
-        <Button size="small" color="primary" onClick={handleClickOpen}>
-          Edit
-        </Button>
+      {props.currentUser && props.currentUser.id === props.diy.user_id && (
+        <>
+          <Button size="small" color="primary" onClick={handleClickOpen}>
+            Edit
+          </Button>
+          <Button
+            onClick={() => {
+              dispatch(deleteDiy(props.diy.id, props.diys));
+              dispatch(getDiys());
+            }}
+            size="small"
+            color="primary"
+          >
+            Delete
+          </Button>
+        </>
       )}
       <Dialog
         open={open}
@@ -217,9 +220,10 @@ function EditDiyForm(props) {
                 <Autocomplete
                   multiple
                   value={diy.tools_attributes}
-                  onChange={(event, value) =>
-                    setDiy({ ...diy, tools_attributes: value })
-                  } // prints the selected value
+                  onChange={(event, value) => {
+                    debugger;
+                    setDiy({ ...diy, tools_attributes: value });
+                  }} // prints the selected value
                   name="tools_attributes"
                   id="tags-filled"
                   options={props.tools.map((option) => option.name)}
@@ -263,7 +267,7 @@ function EditDiyForm(props) {
                       label={`Step ${idx + 1}`}
                       multiline
                       rows={10}
-                      defaultValue={diy.instructions[idx]}
+                      defaultValue={diy.instructions[idx]["instructions"]}
                       onChange={(e) => handleChangeInput(idx, e)}
                       variant="outlined"
                     />
@@ -322,6 +326,10 @@ const mapStateToProps = (state) => {
     loading: state.loading.loading,
   };
 };
-export default connect(mapStateToProps, { patchDiy, getTools, load })(
-  EditDiyForm
-);
+export default connect(mapStateToProps, {
+  patchDiy,
+  getTools,
+  load,
+  deleteDiy,
+  getDiys,
+})(EditDiyForm);
