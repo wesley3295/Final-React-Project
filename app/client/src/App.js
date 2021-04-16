@@ -9,9 +9,14 @@ import {getDiys} from './actions/index.js'
 import {useEffect} from 'react'
 import NavBar from './components/NavBar'
 import CssBaseline from '@material-ui/core/CssBaseline';
-const App = ({diys}) => {
+
+
+const App = ({diys,loading}) => {
   const dispatch = useDispatch()
   useEffect(()=>dispatch(getDiys()),[dispatch])
+  if(loading){
+    return <div>...Loading</div>
+  }
   return (
     <div>
       <Router history={history}>
@@ -30,6 +35,7 @@ const App = ({diys}) => {
 const mapStateToProps = (state) => {
   return {
     diys: state.diy.diys,
+    loading: state.loading.loading
   }
 }
 export default connect(mapStateToProps,{getDiys})(App)

@@ -141,9 +141,9 @@ function DiyForm(props) {
     setOpen(false);
   };
   // eslint-disable-next-line
-  useEffect(() => dispatch(() => props.getTools()), [dispatch]);
-  useEffect(() => getCategories(), []);
-  // eslint-disable-next-line
+  useEffect(() => dispatch(() => props.getTools()), []);//<--- move to handleClickOpen
+  useEffect(() => getCategories(), []);//<--- move to handleClickOpen
+      // eslint-disable-next-line
   useEffect(() =>handleAddInput(), []);
   
   
@@ -252,33 +252,33 @@ function DiyForm(props) {
                       onChange={e=>handleChangeInput(idx,e)}
                       variant="outlined"
                     />
-                  </div>
-                );
-              })}
+                
               <br/>
                     <Button
                     className={classes.stepButton}
                     size="small"
-                      onClick={() => handleAddInput()}
-                      variant="contained"
-                      color="primary"
-                      type="button"
+                    onClick={() => handleAddInput()}
+                    variant="contained"
+                    color="primary"
+                    type="button"
                       style={{marginTop:5,marginLeft:5}}
-
-                    >
+                      
+                      >
                       Add Step
                     </Button>
                     <Button
                     className={classes.stepButton}
-                      onClick={() => handleRemoveInput()}
-                      variant="contained"
-                      color="primary"
-                      type="button"
-                      size="small"
-                      style={{marginTop:5,marginLeft:5}}
+                    onClick={(idx) => handleRemoveInput(idx)}
+                    variant="contained"
+                    color="primary"
+                    type="button"
+                    size="small"
+                    style={{marginTop:5,marginLeft:5}}
                     >
                       Delete Step
                     </Button>
+                      </div>);
+              })}
             </div>
             <Button
               onClick={handleClose}

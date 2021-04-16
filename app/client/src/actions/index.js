@@ -2,7 +2,7 @@ import unsplash from "../components/images/Unsplash";
 
 export const addDiy = (diy) => ({ type: "ADDED_DIY", payload: diy });
 export const removeDiy = (diys) => ({ type: "REMOVE_DIY", payload: diys });
-export const editDiy = (diy) => ({ type: "EDIT_DIY", payload: diy });
+export const editDiy = (diys) => ({ type: "EDIT_DIYS", payload: diys });
 export const retreiveDiys = (diys) => ({ type: "GOT_DIYS", payload: diys });
 export const addTool = (tool) => ({ type: "ADDED_TOOL", payload: tool });
 export const setTools = (tools) => ({ type: "GOT_TOOLS", payload: tools });
@@ -55,6 +55,7 @@ export const getDiy = (id) => {
         return res.json();
       })
       .then((data) => {
+        
         dispatch(obtainDiy(data));
         dispatch({ type: "LOADING", payload: false });
         dispatch({ type: "ERROR", payload: null });
@@ -66,7 +67,7 @@ export const getDiy = (id) => {
   };
 };
 
-export const patchDiy = (diy, id) => {
+export const patchDiy = (diy, id, diys,idx) => {
   const a = diy.instructions.map((i) => i.instructions);
   diy.instructions = a;
   return (dispatch) => {
@@ -90,7 +91,13 @@ export const patchDiy = (diy, id) => {
         return res.json();
       })
       .then((data) => {
-        dispatch(editDiy(data));
+        diys.indexOf()
+        const values = [...diys];
+        const removedDiy = values.splice(0, idx);
+        const addedEditedDiy = values.slice(idx + 1,values.length)
+        const updatedArray = [...removedDiy,data,...addedEditedDiy]
+        
+        dispatch(editDiy(updatedArray));
         dispatch({ type: "LOADING", payload: false });
         dispatch({ type: "ERROR", payload: null });
       })
@@ -170,7 +177,8 @@ export const createDiy = (diy, diys) => {
       })
       .then((data) => {
         dispatch(addDiy(data));
-        dispatch(promiseAllImages(diys));
+        const newImageArray = [...diys, data]
+        dispatch(promiseAllImages(newImageArray));
 
         dispatch({ type: "LOADING", payload: false });
         dispatch({ type: "ERROR", payload: null });

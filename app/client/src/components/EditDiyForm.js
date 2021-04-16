@@ -53,7 +53,7 @@ function EditDiyForm(props) {
   });
 
 
-////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////
   const handleChangeInput = (i, event) => {
     const values = [...diy.instructions];
     const { name, value } = event.target;
@@ -82,15 +82,16 @@ function EditDiyForm(props) {
       user_id: props.currentUser.id,
     });
   };
-////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////
   const onSubmit = (e) => {
     e.preventDefault();
     if (!diy) {
       alert("Please Complete The Form");
     }
-    props.patchDiy(diy, props.diy.id);
+    const idx = props.diys.indexOf(props.diy)
+    props.patchDiy(diy, props.diy.id,props.diys, idx);
   };
-////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////
   const createOptions = () => {
     return categories.map((c, i) => (
       <option key={i} value={c.id}>
@@ -111,7 +112,7 @@ function EditDiyForm(props) {
         console.log(err);
       });
   };
-////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////
   const handleClickOpen = () => {
     if (props.currentUser === undefined) {
       alert("Please Login To Make A DIY");
@@ -123,7 +124,7 @@ function EditDiyForm(props) {
   const handleClose = () => {
     setOpen(false);
   };
-////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////
 
   useEffect(() => {
     const values = props.diy.instructions.map((s) => ({ instructions: s }));
@@ -142,14 +143,14 @@ function EditDiyForm(props) {
   );
 
   useEffect(() => getCategories(), []);
-  
-////////////////////////////////////////////////////////
+
+  ////////////////////////////////////////////////////////
 
   if (props.loading) {
     return <div>...Loading</div>;
   }
-  
-////////////////////////////////////////////////////////
+
+  ////////////////////////////////////////////////////////
 
   return (
     <div>
@@ -271,32 +272,34 @@ function EditDiyForm(props) {
                       onChange={(e) => handleChangeInput(idx, e)}
                       variant="outlined"
                     />
-                  </div>
-                );
+
+
+
+                    <br />
+                    <Button
+                      className={classes.stepButton}
+                      size="small"
+                      onClick={() => handleAddInput()}
+                      variant="contained"
+                      color="primary"
+                      type="button"
+                      style={{ marginTop: 5, marginLeft: 5 }}
+                    >
+                      Add Step
+              </Button>
+                    <Button
+                      className={classes.stepButton}
+                      onClick={(idx) => handleRemoveInput(idx)}
+                      variant="contained"
+                      color="primary"
+                      type="button"
+                      size="small"
+                      style={{ marginTop: 5, marginLeft: 5 }}
+                    >
+                      Delete Step
+              </Button>
+                  </div>)
               })}
-              <br />
-              <Button
-                className={classes.stepButton}
-                size="small"
-                onClick={() => handleAddInput()}
-                variant="contained"
-                color="primary"
-                type="button"
-                style={{ marginTop: 5, marginLeft: 5 }}
-              >
-                Add Step
-              </Button>
-              <Button
-                className={classes.stepButton}
-                onClick={() => handleRemoveInput()}
-                variant="contained"
-                color="primary"
-                type="button"
-                size="small"
-                style={{ marginTop: 5, marginLeft: 5 }}
-              >
-                Delete Step
-              </Button>
             </div>
             <Button
               onClick={handleClose}

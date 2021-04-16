@@ -5,7 +5,7 @@ const diyReducer = (state = { diys: [],images:[],showDiy:{}, error: null }, acti
         case "REMOVE_DIY":
             return {...state, diys: action.payload }
         case "EDIT_DIYS":
-            return {...state, diys:[...state.diys,] }
+            return {...state, diys: action.payload }
         case "DIY_IMAGES":
             return {...state, images: action.payload }
         case "SHOW_DIY":

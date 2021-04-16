@@ -47,6 +47,8 @@ const useStyles = makeStyles((theme) =>
 ////////////////////////////////////////////////////////
 
 function Diy(props) {
+  const diy = props.diys.find(d=> d.id === parseInt(props.match.params.id))
+
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
   const [activeStep, setActiveStep] = React.useState(0);
@@ -56,7 +58,7 @@ function Diy(props) {
 ////////////////////////////////////////////////////////
   
   function getSteps() {
-    return props.diy.instructions&&props.diy.instructions.map(s=>"")
+    return diy.instructions&&diy.instructions.map(s=>"")
   }
   const steps = getSteps();
   
@@ -92,12 +94,12 @@ function Diy(props) {
   };
   
   const createdAt = () => {
-    let d = new Date(props.diy.created_at)
+    let d = new Date(diy.created_at)
     return (d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear())
   }
   
   
-  useEffect(() => dispatch(getDiy(parseInt(props.match.params.id))), [props.match.params.id,dispatch])
+  // useEffect(() => dispatch(getDiy(parseInt(props.match.params.id))), [])
   if (props.loading) {
     return (
       <div>
@@ -115,10 +117,10 @@ function Diy(props) {
             </IconButton>
           }
           title={createdAt()}
-          subheader= {props.diy.user&&`by:${props.diy.user.username}`}
+          subheader= {diy.user&&`by:${diy.user.username}`}
           
         />
-        <Carousel diy={props.diy} activeStep={activeStep} setActiveStep={setActiveStep} handleBack={handleBack} handleNext={handleNext} />
+        <Carousel diy={diy} activeStep={activeStep} setActiveStep={setActiveStep} handleBack={handleBack} handleNext={handleNext} />
         
         <CardContent>
           <Typography variant="body2" color="textSecondary" component="p">
@@ -145,7 +147,7 @@ function Diy(props) {
         </CardActions>
         <Collapse in={expanded} timeout="auto" unmountOnExit>
           <CardContent>
-            <StepCarousel diy={props.diy} activeStep={activeStep} setActiveStep={setActiveStep} handleBack={handleBack} handleNext={handleNext} totalSteps={totalSteps} setCompleted={setCompleted} completed={completed} steps={steps} />
+            <StepCarousel diy={diy} activeStep={activeStep} setActiveStep={setActiveStep} handleBack={handleBack} handleNext={handleNext} totalSteps={totalSteps} setCompleted={setCompleted} completed={completed} steps={steps} />
           </CardContent>
         </Collapse>
       </Card>
@@ -154,7 +156,8 @@ function Diy(props) {
 }
 const mapStateToProps = (state) => {
   return {
-    diy: state.diy.showDiy,
+    diys: state.diy.diys,
+    // diy: state.diy.showDiy,
     loading: state.loading.loading
   }
 }
