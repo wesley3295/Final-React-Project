@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import React from 'react';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -8,52 +7,25 @@ import CardActions from '@material-ui/core/CardActions';
 import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import { red } from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { connect } from 'react-redux'
 import Container from '@material-ui/core/Container';
-import { useDispatch } from 'react-redux'
-import { getDiy } from '../actions'
 import StepCarousel from './StepCarousel'
 import Carousel from './Carousel'
+import {classes} from './CSS/DiyCss'
 
-const useStyles = makeStyles((theme) =>
-({
-  root: {
-    maxWidth: 1000,
-  },
-  media: {
-    height: 0,
-    paddingTop: '56.25%', // 16:9
-  },
-  expand: {
-    transform: 'rotate(0deg)',
-    marginLeft: 'auto',
-    transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest,
-    }),
-  },
-  expandOpen: {
-    transform: 'rotate(180deg)',
-  },
-  avatar: {
-    backgroundColor: red[500],
-  },
-}),
-);
+
 ////////////////////////////////////////////////////////
 
 function Diy(props) {
   const diy = props.diys.find(d=> d.id === parseInt(props.match.params.id))
 
-  const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
   const [activeStep, setActiveStep] = React.useState(0);
   const [completed, setCompleted] = React.useState({});
-  const dispatch = useDispatch()
   
 ////////////////////////////////////////////////////////
   
@@ -98,15 +70,6 @@ function Diy(props) {
     return (d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear())
   }
   
-  
-  // useEffect(() => dispatch(getDiy(parseInt(props.match.params.id))), [])
-  if (props.loading) {
-    return (
-      <div>
-      ...Loading
-    </div>
-  )
-}
   return (
     <Container maxWidth="lg">
       <Card className={classes.root}>
@@ -157,7 +120,6 @@ function Diy(props) {
 const mapStateToProps = (state) => {
   return {
     diys: state.diy.diys,
-    // diy: state.diy.showDiy,
     loading: state.loading.loading
   }
 }

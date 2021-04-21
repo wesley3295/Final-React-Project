@@ -8,7 +8,7 @@ import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
-import { useStyles } from './SignUpCss'
+import { useStyles } from './CSS/SignUpCss'
 import Copyright from './Copyright'
 import { useState } from 'react'
 import history from '../history'

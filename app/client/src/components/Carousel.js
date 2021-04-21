@@ -1,5 +1,5 @@
 import React from 'react'
-import { classes } from './StepCarouselCss';
+import { classes } from './CSS/StepCarouselCss';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 

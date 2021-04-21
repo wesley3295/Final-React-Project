@@ -9,7 +9,6 @@ export const setTools = (tools) => ({ type: "GOT_TOOLS", payload: tools });
 export const setUsers = (users) => ({ type: "GOT_USERS", payload: users });
 export const addUser = (user) => ({ type: "ADDED_USER", payload: user });
 export const currentUser = (user) => ({ type: "CURRENT_USER", payload: user });
-export const obtainDiy = (diy) => ({ type: "SHOW_DIY", payload: diy });
 export const diyImages = (images) => ({ type: "DIY_IMAGES", payload: images });
 export const load = (boolean) => ({ type: "LOADING", payload: boolean });
 //all diys
@@ -30,33 +29,6 @@ export const getDiys = () => {
       .then((data) => {
         dispatch(retreiveDiys(data));
         dispatch(promiseAllImages(data));
-        dispatch({ type: "LOADING", payload: false });
-        dispatch({ type: "ERROR", payload: null });
-      })
-      .catch((err) => {
-        dispatch({ type: "LOADING", payload: false });
-        dispatch({ type: "ERROR", payload: err.message });
-      });
-  };
-};
-
-//one diy
-export const getDiy = (id) => {
-  return (dispatch) => {
-    dispatch({ type: "LOADING", payload: true });
-    fetch(`/diys/${id}`)
-      .then((res) => {
-        if (!res.ok) {
-          throw dispatch({
-            type: "ERROR",
-            payload: "could not fetch the data for that resource",
-          });
-        }
-        return res.json();
-      })
-      .then((data) => {
-        
-        dispatch(obtainDiy(data));
         dispatch({ type: "LOADING", payload: false });
         dispatch({ type: "ERROR", payload: null });
       })

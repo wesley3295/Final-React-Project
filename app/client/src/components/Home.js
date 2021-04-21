@@ -1,17 +1,3 @@
-// import DiyList from "./DiyList";
-
-// const Home = () => {
-//   return (
-//     <div className="home">
-//       { error && <div>{ error }</div> }
-//       { isPending && <div>Loading...</div> }
-//       { diys && <DiyList diys={diys} /> }
-//     </div>
-//   );
-// }
-
-// export default Home;
-
 import React from 'react';
 // import DiyForm from './DiyForm.js'
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -19,7 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Copyright from "./Copyright"
-import { useStyles } from './HomeCss'
+import { useStyles } from './CSS/HomeCss'
 import DiyList from './DiyList'
 import { connect } from 'react-redux'
 

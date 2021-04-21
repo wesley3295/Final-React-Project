@@ -5,7 +5,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import {useStyles} from './SignUpCss'
+import {useStyles} from './CSS/SignUpCss'
 import {connect} from 'react-redux'
 import {fetchUser} from '../actions'
  function Login({open,setOpen,fetchUser}) {

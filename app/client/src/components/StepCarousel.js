@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepButton from '@material-ui/core/StepButton';
-import {classes} from './StepCarouselCss';
+import {classes} from './CSS/StepCarouselCss';
 
 
 export default function HorizontalNonLinearStepper({diy,activeStep,setActiveStep, handleBack, handleNext, completed, setCompleted,totalSteps,steps}) {
