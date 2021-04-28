@@ -11,7 +11,7 @@ import NavBar from './components/NavBar'
 import CssBaseline from '@material-ui/core/CssBaseline';
 
 
-const App = ({diys,loading}) => {
+const App = ({loading}) => {
   const dispatch = useDispatch()
   useEffect(()=>dispatch(getDiys()),[dispatch])
   if(loading){

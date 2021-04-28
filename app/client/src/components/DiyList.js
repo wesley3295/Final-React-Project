@@ -10,11 +10,13 @@ import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 import history from "../history";
 import EditDiyForm from "./EditDiyForm";
-
+import {useState} from 'react'
+import TextField from "@material-ui/core/TextField";
+import Counter from "./Counter"
 export function DiyList(props) {
   const classes = useStyles();
 
-  if (props.loading) {
+if (props.loading) {
     return <div>...Loading</div>;
   }
 
@@ -49,6 +51,7 @@ export function DiyList(props) {
                     View
                   </Button>
                   <EditDiyForm diy={diy} />
+                       <Counter/>
                 </CardActions>
               </Card>
             </Grid>
